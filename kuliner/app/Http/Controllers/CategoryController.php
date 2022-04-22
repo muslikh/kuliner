@@ -114,8 +114,21 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        // dd($category);
+
+        session()->flash('error','Data Di hapus');
+
+        if($category->delete()) {
+
+            return response()->json([
+                'success' => true,
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+        ]);
     }
 }

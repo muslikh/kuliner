@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Place;
+use App\Models\SubDistrict;
 use Illuminate\Http\Request;
 
 class PlaceController extends Controller
@@ -34,7 +35,9 @@ class PlaceController extends Controller
      */
     public function create()
     {
-        //
+        return view('places.create',[
+            'subDistricts' => SubDistrict::get(),
+        ]);
     }
 
     /**
@@ -45,7 +48,38 @@ class PlaceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name' => ['required'],
+            'address' => ['required'],
+            'sub_district_id' => ['required'],
+            'phone' => ['required','numeric'],
+            'description' => ['required'],
+            'latitude' => ['required'],
+            'longitude' => ['required'],
+            'image' => ['required','image'],
+        ]);
+
+        $image = null;
+
+        if($request->has('image')) {
+            $image = $request->file('image')->store('images');
+        }
+
+        Place::create([
+            'sub_district_id' => $request->sub_district_id,
+            'name' => $request->name,
+            'description' => $request->description,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'image' => $image,
+            'latitude' => $request->latitude,
+            'Longitude' => $request->longitude,
+
+        ]);
+
+        session()->flash('success','Berhasil Tambah');
+
+        return redirect()->route('places.index');
     }
 
     /**

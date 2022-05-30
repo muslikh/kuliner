@@ -1,5 +1,5 @@
 <x-templates.default>
-    <x-slot name='title'>Tambah Tempat Kuliner</x-slot>
+    <x-slot name='title'>Perbarui Tempat Kuliner</x-slot>
 
     <form action="{{route('place.store')}}" class="card" method="POST" enctype="multipart/form-data">
         @csrf
@@ -7,7 +7,7 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="">Nama</label>
-                <input type="text" name="name" placeholder="Nama Tempat Kuliner" value="{{ old('name')}}" class="form-control @error('name') is-invalid @enderror">
+                <input type="text" name="name" placeholder="Nama Tempat Kuliner" value="{{ old('name') ?? $place->name }}" class="form-control @error('name') is-invalid @enderror">
                 @error('name')
                     <span class="invalid-feedback">
                         <strong>{{ $message}}</strong>
@@ -17,7 +17,7 @@
 
             <div class="form-group mt-2">
                 <label for="">Deskripsi</label>
-                <textarea name="description" id=""  rows="3" class="form-control  @error('description') is-invalid @enderror"> {{old('description') }} </textarea>
+                <textarea name="description" id=""  rows="3" class="form-control  @error('description') is-invalid @enderror"> {{old('description') ?? $place->description }} </textarea>
                 @error('description')
                     <span class="invalid-feedback">
                         <strong>{{ $message}}</strong>
@@ -29,7 +29,8 @@
                 <label for="">Kecamatan</label>
                 <select name="sub_district_id" id="" class="form-control   @error('sub_district_id') is-invalid @enderror"">
                     @foreach ($subDistricts as $subDistrict)
-                        <option value="{{ $subDistrict->id}}">{{$subDistrict->name}}</option>
+                        <option value="{{ $subDistrict->id}}" @if($subDistrict->id == $place->sub_district_id)
+                            selected @endif >{{$subDistrict->name}}</option>
                     @endforeach
                 </select>
                 @error('sub_district_id')
@@ -41,7 +42,7 @@
 
             <div class="form-group mt-2">
                 <label for="">Alamat</label>
-                <input type="text" name="address" placeholder="Alamat Tempat Kuliner" value="{{ old('address')}}" class="form-control @error('address') is-invalid @enderror">
+                <input type="text" name="address" placeholder="Alamat Tempat Kuliner" value="{{ old('address') ?? $place->address }}" class="form-control @error('address') is-invalid @enderror">
                 @error('address')
                     <span class="invalid-feedback">
                         <strong>{{ $message}}</strong>
@@ -51,7 +52,7 @@
 
             <div class="form-group mt-2">
                 <label for="">Telepon</label>
-                <input type="text" name="phone" placeholder="No Terlp" value="{{ old('phone')}}" class="form-control @error('phone') is-invalid @enderror">
+                <input type="text" name="phone" placeholder="No Telpone" value="{{ old('phone') ?? $place->phone }}" class="form-control @error('phone') is-invalid @enderror">
                 @error('phone')
                     <span class="invalid-feedback">
                         <strong>{{ $message}}</strong>
@@ -61,7 +62,7 @@
 
             <div class="form-group mt-2">
                 <label for="">Foto</label>
-                <input type="file" name="image" placeholder="No Terlp" value="{{ old('image')}}" class="form-control @error('image') is-invalid @enderror">
+                <input type="file" name="image" value="{{ old('image') ?? $place->image}}" class="form-control @error('image') is-invalid @enderror">
                 @error('image')
                     <span class="invalid-feedback">
                         <strong>{{ $message}}</strong>
@@ -78,7 +79,7 @@
 
                         <div class="form-group mt-2">
                             <label for="">Latitude</label>
-                            <input type="text" name="latitude" readonly id="latitude" placeholder="latitude" value="{{ old('latitude')}}" class="form-control @error('latitude') is-invalid @enderror">
+                            <input type="text" name="latitude" readonly id="latitude" placeholder="latitude" value="{{ old('latitude') ?? $place->latitude}}" class="form-control @error('latitude') is-invalid @enderror">
                             @error('latitude')
                                 <span class="invalid-feedback">
                                     <strong>{{ $message}}</strong>
@@ -91,7 +92,7 @@
 
                         <div class="form-group mt-2">
                             <label for="">Logitude</label>
-                            <input type="text" readonly name="longitude" id="longitude" placeholder="longitude" value="{{ old('longitude')}}" class="form-control @error('longitude') is-invalid @enderror">
+                            <input type="text" readonly name="longitude" id="longitude" placeholder="longitude" value="{{ old('longitude') ?? $place->longitude}}" class="form-control @error('longitude') is-invalid @enderror">
                             @error('longitude')
                                 <span class="invalid-feedback">
                                     <strong>{{ $message}}</strong>

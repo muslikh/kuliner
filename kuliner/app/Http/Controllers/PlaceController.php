@@ -79,7 +79,7 @@ class PlaceController extends Controller
 
         session()->flash('success','Berhasil Tambah');
 
-        return redirect()->route('places.index');
+        return redirect()->route('place.index');
     }
 
     /**
@@ -99,9 +99,12 @@ class PlaceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Place $place)
     {
-        //
+        return view('places.edit', [
+            'subDistricts' => SubDistrict::get(),
+            'place' => $place
+        ]);
     }
 
     /**

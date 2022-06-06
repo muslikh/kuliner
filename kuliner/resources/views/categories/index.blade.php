@@ -37,7 +37,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+            </div>
 
         </div>
     </div>
@@ -56,7 +56,7 @@
                     serverSide: true,
                     ajax: '{!! route('category.index') !!}',
                     columns: [
-                        { data: 'id', name: 'id' },
+                        { data: 'DT_RowIndex', name: 'DT_RowIndex',orderable:false },
                         { data: 'name', name: 'name' },
                         { data: 'slug', name: 'slug' },
                         { data: 'action', name: 'action' },

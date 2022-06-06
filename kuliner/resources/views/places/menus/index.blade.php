@@ -1,8 +1,8 @@
 <x-templates.default>
-    <x-slot name="title">Data Tempat Kuliner</x-slot>
+    <x-slot name="title">Data Menu Dari {{$place->name}}</x-slot>
     <div class="card">
         <div class="card-header">
-            <a href="{{route('place.create')}}" class="btn btn-primary">Tambah Data</a>
+            <a href="{{route('menu.create', $place)}}" class="btn btn-primary">Tambah Data</a>
         </div>
 
         <div class="card body">
@@ -12,10 +12,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Nama</th>
-                        <th>Kecamatan</th>
+                        <th>Gambar</th>
                         <th>Deskripsi</th>
-                        <th>Alamat</th>
-                        <th>Telepon</th>
+                        <th>Harga</th>
                         <th>Tindakan</th>
                     </tr>
                 </thead>
@@ -56,14 +55,13 @@
                 $('#dataTable').DataTable({
                     processing: true,
                     serverSide: true,
-                    ajax: '{!! route('place.index') !!}',
+                    ajax: '{!! route('menu.index', request()->segment(2)) !!}',
                     columns: [
                         { data: 'DT_RowIndex', name: 'DT_RowIndex',orderable:false },
-                        { data: 'place-menu', name: 'place-menu' },
-                        { data: 'subDistrictName', name: 'subDistrictName' },
+                        { data: 'name', name: 'name' },
+                        { data: 'image', name: 'image' },
                         { data: 'description', name: 'description' },
-                        { data: 'address', name: 'address' },
-                        { data: 'phone', name: 'phone' },
+                        { data: 'price', name: 'price' },
                         { data: 'action', name: 'action' },
                     ]
                 });
@@ -85,7 +83,7 @@
                 var id = $(this).data('id');
                 $.ajax({
                 type: 'DELETE',
-                url: 'place/' + id,
+                url: 'place/' + id + '/menu',
                 data: {
                     '_token': "{{csrf_token()}}"
                 },

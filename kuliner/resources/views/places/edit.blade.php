@@ -1,8 +1,9 @@
 <x-templates.default>
     <x-slot name='title'>Perbarui Tempat Kuliner</x-slot>
 
-    <form action="{{route('place.store')}}" class="card" method="POST" enctype="multipart/form-data">
+    <form action="{{route('place.update', $place)}}" class="card" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="card-header"> Tambah Data Tempat Kuliner</div>
         <div class="card-body">
             <div class="form-group">
@@ -129,7 +130,7 @@
         crossorigin=""></script>
 
         <script>
-            var map = L.map('map').fitWorld();
+            var map = L.map('map').setView([{{$place->latitude}}, {{$place->longitude}}], 16);
 
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -140,17 +141,10 @@
                 accessToken: 'pk.eyJ1IjoibXVzbGlraCIsImEiOiJja2s3bHV1NHcwZjEwMnZwMmNxbzRrNHQ5In0.7-C0ZFBUsEmAkyWGfS1cPw'
             }).addTo(map);
 
-            function onLocationFound(e) {
-                var radius = e.accuracy;
-
-                $('#latitude').val(e.latlng.lat)
-                $('#longitude').val(e.latlng.lng)
-
-               var locationMarker = L.marker(e.latlng,{draggable: 'true'}).addTo(map);
-                    // .bindPopup("You are within " + radius + " meters from this point").openPopup();
+            var marker = L.marker([{{$place->latitude}}, {{$place->longitude}}], {draggable : 'true'} ).addTo(map);
 
                 // L.circle(e.latlng, radius).addTo(map);
-                locationMarker.on('dragend', function( event) {
+                marker.on('dragend', function( event) {
                     var marker = event.target;
                     var position = marker.getLatLng();
 
@@ -160,16 +154,12 @@
                     $('#longitude').val(position.lng)
 
                 });
-            }
             function onLocationError(e) {
                 alert(e.message);
             }
 
-            map.on('locationfound', onLocationFound);
             map.on('locationerror', onLocationError);
 
-            map.locate({setView: true, maxZoom: 16});
-            // var marker = L.marker([51.5, -0.09]).addTo(map);
         </script>
     @endpush
 </x-templates.default>

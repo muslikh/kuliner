@@ -19,6 +19,7 @@ class CategoryController extends Controller
             $categories = Category::query();
 
             return datatables()->of($categories)
+            ->addIndexColumn()
             // ->addColumn('action',function() {
             //     return '<a href="#">Edit</a>';
             // })
